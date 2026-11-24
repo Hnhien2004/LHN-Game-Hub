@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nitro Indie Hub — Kho Game Unity Cá Nhân</title>
+  <style>
+    /* ==========================================================================
+       BỘ BIẾN MÀU & THIẾT LẬP GIAO DIỆN SÁNG SỦA, HIỆN ĐẠI (KHÔNG PHỤ THUỘC CDN)
+       ========================================================================== */
+    :root {
+      --bg-page: #f4f7fb;
+      --bg-surface: #ffffff;
+      --bg-soft: #eef3f9;
+      --bg-tint-sky: #e0f2fe;
+      --bg-tint-mint: #dcfce7;
+      --bg-tint-amber: #fef3c7;
+      --bg-tint-violet: #ede9fe;
+      --text-main: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent-mint: #059669;
+      --accent-mint-hover: #047857;
+      --accent-violet: #7c3aed;
+      --accent-amber: #d97706;
+      --accent-rose: #dc2626;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 18px 40px rgba(2, 132, 199, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    code {
+      background: var(--bg-soft);
+      color: var(--primary-hover);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 0 24px;
+      }
+    }
+
+    /* ==========================================================================
+       THANH ĐIỀU HƯỚNG TRÊN CÙNG
+       ========================================================================== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.25);
+    }
+
+    .brand-title-wrap {
+      min-width: 0;
+    }
+
+    .brand-name {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-body);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    @media (min-width: 820px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.14s ease, background-color 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent-violet));
+      color: #ffffff;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.22);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-sky {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 11px 14px;
+      font-size: 0.88rem;
+    }
+
+    .btn-sky:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-mint {
+      background: var(--accent-mint);
+      color: #ffffff;
+      padding: 11px 14px;
+      font-size: 0.88rem;
+    }
+
+    .btn-mint:hover {
+      background: var(--accent-mint-hover);
+    }
+
+    .btn-outline {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      border: 1px solid var(--border-strong);
+      padding: 10px 14px;
+      font-size: 0.86rem;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f8fbff;
+    }
+
+    .btn-danger-soft {
+      background: #fef2f2;
+      color: var(--accent-rose);
+      border: 1px solid #fecaca;
+      padding: 7px 11px;
+      font-size: 0.8rem;
+    }
+
+    .btn-danger-soft:hover {
+      background: #fee2e2;
+    }
+
+    /* ==========================================================================
+       PHẦN ĐẦU TRANG (HERO + HƯỚNG DẪN NHANH + TÌM KIẾM/LỌC)
+       ========================================================================== */
+    .hero {
+      padding: 36px 0 28px;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(2, 132, 199, 0.12), transparent 42%),
+        radial-gradient(circle at 88% 12%, rgba(124, 58, 237, 0.1), transparent 45%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg-page) 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        padding: 48px 0 36px;
+      }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (min-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1.25fr 0.95fr;
+        gap: 28px;
+      }
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-tint-sky);
+      color: var(--primary-hover);
+      border: 1px solid #bae6fd;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-mint);
+    }
+
+    .hero-title {
+      margin: 14px 0 10px;
+      font-size: clamp(1.85rem, 4vw, 2.8rem);
+      line-height: 1.16;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-desc {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-body);
+      max-width: 640px;
+    }
+
+    .quick-steps-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .quick-steps-title {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .quick-steps-sub {
+      margin: 0 0 14px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .quick-step-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .quick-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      background: var(--bg-soft);
+      font-size: 0.88rem;
+      color: var(--text-body);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Thanh tìm kiếm & lọc nền tảng */
+    .filter-bar {
+      margin-top: 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .filter-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 460px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 14px 11px 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: #f8fafc;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-tab {
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-body);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-tab:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       CHẾ ĐỘ QUẢN LÝ & XUẤT FILE HTML
+       ========================================================================== */
+    .manager-drawer {
+      display: none;
+      background: #f8fafc;
+      border-bottom: 2px solid var(--primary);
+      padding: 28px 0 34px;
+    }
+
+    .manager-drawer.open {
+      display: block;
+    }
+
+    .manager-header {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    @media (min-width: 820px) {
+      .manager-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .manager-title {
+      margin: 6px 0 4px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .manager-sub {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-body);
+    }
+
+    .manager-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .panel-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .studio-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 640px) {
+      .studio-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .editor-layout {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 960px) {
+      .editor-layout {
+        grid-template-columns: 1.35fr 0.85fr;
+        align-items: start;
+      }
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 5px;
+    }
+
+    .field-input,
+    .field-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--text-main);
+      font-size: 0.9rem;
+    }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.14);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .three-col {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .mini-game-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+      max-height: 460px;
+      overflow-y: auto;
+    }
+
+    .mini-game-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
+      background: #f8fafc;
+    }
+
+    .mini-game-name {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .mini-game-meta {
+      margin: 2px 0 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       DANH SÁCH GAME DẠNG THẺ
+       ========================================================================== */
+    .section-block {
+      padding: 40px 0;
+    }
+
+    @media (min-width: 768px) {
+      .section-block {
+        padding: 52px 0;
+      }
+    }
+
+    .section-head {
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.22;
+    }
+
+    .section-desc {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-body);
+      max-width: 760px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 680px) {
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .games-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .game-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: #bae6fd;
+    }
+
+    .card-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag-genre {
+      background: var(--bg-tint-violet);
+      color: var(--accent-violet);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .tag-version {
+      background: var(--bg-soft);
+      color: var(--text-main);
+      border: 1px solid var(--border-light);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .game-title {
+      margin: 12px 0 8px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .game-desc {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: var(--text-body);
+    }
+
+    .size-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .size-chip {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      padding: 4px 9px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .install-tip-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: var(--text-body);
+      margin-bottom: 16px;
+    }
+
+    .card-actions {
+      display: grid;
+      gap: 9px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .dl-btn {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .dl-disabled {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: #f8fafc;
+      border: 1px dashed var(--border-strong);
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      margin-top: 16px;
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    /* ==========================================================================
+       HƯỚNG DẪN TỪ A ĐẾN Z CHO NGƯỜI MỚI Ở CUỐI TRANG
+       ========================================================================== */
+    .atoz-section {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-light);
+      padding: 44px 0 56px;
+    }
+
+    .atoz-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .atoz-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .atoz-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .atoz-badge {
+      display: inline-block;
+      background: var(--bg-tint-sky);
+      color: var(--primary-hover);
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: 8px;
+    }
+
+    .atoz-title {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .atoz-text {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-body);
+    }
+
+    .footer {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border-light);
+      padding: 22px 0;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    /* ==========================================================================
+       THÔNG BÁO NỔI (TOAST) & HỘP THÔNG BÁO CHI TIẾT (MODAL) - KHÔNG DÙNG ALERT()
+       ========================================================================== */
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 60;
+      max-width: 380px;
+      background: var(--text-main);
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      display: flex;
+    }
+
+    .toast-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #34d399;
+      flex-shrink: 0;
+    }
+
+    .toast-dot.warn {
+      background: #fbbf24;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .modal-title {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: var(--text-body);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Toast thông báo nổi -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span id="toastDot" class="toast-dot"></span>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- Hộp thông báo thân thiện (thay thế hoàn toàn alert/confirm) -->
+  <div id="infoModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <h3 id="modalTitle" class="modal-title">Thông báo</h3>
+      <div id="modalBody" class="modal-body"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button id="modalCloseBtn" type="button" class="btn btn-sky">Đã hiểu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thanh điều hướng -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="#top" class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+            <path d="M6 12h4"></path>
+            <path d="M8 10v4"></path>
+            <circle cx="15.5" cy="11" r="1"></circle>
+            <circle cx="18" cy="13" r="1"></circle>
+          </svg>
+        </div>
+        <div class="brand-title-wrap">
+          <p id="navStudioName" class="brand-name">Nitro Indie Hub</p>
+          <p id="navStudioSub" class="brand-sub">Unity 6.3 LTS • Acer Nitro AN515-43 (16GB RAM)</p>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Điều hướng chính">
+        <a href="#games">Danh sách game</a>
+        <a href="#atoz-guide">Hướng dẫn A-Z</a>
+      </nav>
+
+      <button id="toggleManagerBtn" type="button" class="btn btn-primary" aria-expanded="false">
+        <span id="toggleManagerText">Quản lý &amp; Xuất file HTML</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Khu vực Quản lý & Xuất file HTML dành cho chủ sở hữu -->
+  <section id="managerDrawer" class="manager-drawer" aria-label="Quản lý game và xuất file HTML">
+    <div class="container">
+      <div class="manager-header">
+        <div>
+          <span class="pill-badge"><span class="pill-dot"></span> Chế độ chủ trang • Tự lưu localStorage</span>
+          <h2 class="manager-title">Quản lý studio, danh sách game &amp; tải về file index.html mới</h2>
+          <p class="manager-sub">
+            Đổi tên studio/trang, thêm hoặc sửa link tải file game sau khi build từ Unity, sau đó bấm <strong>Tải về file index.html mới</strong> để giữ bản cập nhật trên máy của bạn.
+          </p>
+        </div>
+        <div class="manager-actions">
+          <button id="addNewModeBtn" type="button" class="btn btn-outline">+ Thêm game mới</button>
+          <button id="exportIndexBtn" type="button" class="btn btn-mint">Tải về file index.html mới</button>
+          <button id="restoreSampleBtn" type="button" class="btn btn-outline">Khôi phục mẫu</button>
+        </div>
+      </div>
+
+      <!-- Đổi tên studio và phụ đề trang -->
+      <div class="panel-box studio-grid">
+        <div class="field-group" style="margin-bottom:0;">
+          <label for="studioNameInput" class="field-label">Tên studio / trang web của bạn</label>
+          <input id="studioNameInput" type="text" class="field-input" placeholder="Ví dụ: Nitro Indie Hub" />
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label for="studioSubInput" class="field-label">Lời giới thiệu ngắn gọn ở thanh đầu trang</label>
+          <input id="studioSubInput" type="text" class="field-input" placeholder="Ví dụ: Kho game Unity cá nhân • Tải cho PC &amp; Android" />
+        </div>
+      </div>
+
+      <!-- Form thêm/sửa game và danh sách quản lý nhanh -->
+      <div class="editor-layout">
+        <form id="gameForm" class="panel-box">
+          <h3 id="formHeading" style="margin:0 0 12px; font-size:1.05rem; font-weight:800;">Thêm game mới</h3>
+          <input id="editingGameId" type="hidden" />
+
+          <div class="two-col">
+            <div class="field-group">
+              <label for="fTitle" class="field-label">Tên game *</label>
+              <input id="fTitle" type="text" required class="field-input" placeholder="Ví dụ: Skybound Jump" />
+            </div>
+            <div class="field-group">
+              <label for="fGenre" class="field-label">Thể loại *</label>
+              <input id="fGenre" type="text" required class="field-input" placeholder="Ví dụ: 2D Platformer" />
+            </div>
+          </div>
+
+          <div class="three-col">
+            <div class="field-group">
+              <label for="fVersion" class="field-label">Phiên bản *</label>
+              <input id="fVersion" type="text" required class="field-input" placeholder="Ví dụ: v0.1.0" />
+            </div>
+            <div class="field-group">
+              <label for="fWinSize" class="field-label">Dung lượng bản PC</label>
+              <input id="fWinSize" type="text" class="field-input" placeholder="Ví dụ: 135 MB" />
+            </div>
+            <div class="field-group">
+              <label for="fApkSize" class="field-label">Dung lượng bản Android</label>
+              <input id="fApkSize" type="text" class="field-input" placeholder="Ví dụ: 74 MB" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="fDesc" class="field-label">Mô tả ngắn *</label>
+            <textarea id="fDesc" rows="2" required class="field-textarea" placeholder="Mô tả ngắn gọn lối chơi và điểm thú vị của game..."></textarea>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group">
+              <label for="fWinUrl" class="field-label">Link tải bản PC (.zip)</label>
+              <input id="fWinUrl" type="text" class="field-input" placeholder="https://... hoặc để trống nếu chưa có" />
+            </div>
+            <div class="field-group">
+              <label for="fApkUrl" class="field-label">Link tải bản Android (.apk)</label>
+              <input id="fApkUrl" type="text" class="field-input" placeholder="https://... hoặc để trống nếu chưa có" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="fInstallNote" class="field-label">Hướng dẫn cài đặt nhanh riêng cho game này</label>
+            <input id="fInstallNote" type="text" class="field-input" placeholder="Ví dụ: Giải nén file .zip rồi chạy file .exe; trên Android bật cài từ nguồn này." />
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;">
+            <button id="saveGameBtn" type="submit" class="btn btn-sky">Lưu game</button>
+            <button id="clearFormBtn" type="button" class="btn btn-outline">Xóa trắng ô nhập</button>
+          </div>
+        </form>
+
+        <div class="panel-box">
+          <h3 style="margin:0 0 4px; font-size:1.05rem; font-weight:800;">
+            Game đang có (<span id="mgrCount">0</span>)
+          </h3>
+          <p style="margin:0; font-size:0.82rem; color:var(--text-muted);">
+            Chọn <strong>Sửa</strong> để cập nhật phiên bản, dung lượng hoặc link tải; chọn <strong>Xóa</strong> để gỡ game.
+          </p>
+          <div id="mgrGameList" class="mini-game-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phần đầu trang: giới thiệu, hướng dẫn nhanh cho Chrome/Cốc Cốc & tìm kiếm/lọc -->
+  <section id="top" class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="pill-badge">
+            <span class="pill-dot"></span>
+            <span>Dành cho người mới làm game Unity trên Acer Nitro AN515-43 (RAM 16GB)</span>
+          </span>
+          <h1 class="hero-title">
+            Trang tải &amp; chia sẻ game <span>Unity cá nhân</span> gọn nhẹ
+          </h1>
+          <p class="hero-desc">
+            Đây là nơi bạn giới thiệu các tựa game tự làm trên Unity, gắn link tải bản <strong>PC (.zip)</strong> và <strong>Android (.apk)</strong>, rồi gửi link cho bạn bè mở trực tiếp trên <strong>Google Chrome</strong> hoặc <strong>Cốc Cốc</strong> để tải về chơi.
+          </p>
+        </div>
+
+        <aside class="quick-steps-card" aria-label="Hướng dẫn nhanh cho người mới và bạn bè">
+          <h2 class="quick-steps-title">Hướng dẫn nhanh trên Chrome &amp; Cốc Cốc</h2>
+          <p class="quick-steps-sub">Áp dụng cho cả bạn bè tải game về chơi và bạn kiểm tra link:</p>
+          <ol class="quick-step-list">
+            <li class="quick-step-item">
+              <span class="step-num">1</span>
+              <span>Mở đường link trang web trên <strong>Google Chrome</strong> hoặc <strong>Cốc Cốc</strong>, tìm game và chọn <strong>Tải PC (.zip)</strong> hoặc <strong>Tải Android (.apk)</strong>.</span>
+            </li>
+            <li class="quick-step-item">
+              <span class="step-num">2</span>
+              <span>Với bản <strong>PC (.zip)</strong>: tải xong hãy <strong>giải nén</strong> ra thư mục riêng rồi mới chạy file <code>.exe</code>.</span>
+            </li>
+            <li class="quick-step-item">
+              <span class="step-num">3</span>
+              <span>Với bản <strong>Android (.apk)</strong>: mở file tải về và bật quyền <strong>Cho phép từ nguồn này</strong> nếu máy hỏi để cài đặt.</span>
+            </li>
+          </ol>
+        </aside>
+      </div>
+
+      <!-- Thanh tìm kiếm & lọc nền tảng -->
+      <div id="games" class="filter-bar" role="region" aria-label="Tìm kiếm và lọc game">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input id="searchInput" type="search" class="search-input" placeholder="Tìm theo tên game, thể loại hoặc phiên bản..." />
+        </div>
+
+        <div class="filter-group" role="group" aria-label="Lọc theo nền tảng">
+          <button type="button" class="filter-tab active" data-platform="all">Tất cả</button>
+          <button type="button" class="filter-tab" data-platform="pc">PC Windows</button>
+          <button type="button" class="filter-tab" data-platform="android">Android</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Danh sách game dạng thẻ -->
+  <section class="section-block" aria-label="Danh sách game">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Danh sách bản build</span>
+        <h2 class="section-title">Các tựa game hiện có</h2>
+        <p class="section-desc">
+          Mỗi thẻ hiển thị rõ thông tin phiên bản, dung lượng, hướng dẫn cài đặt nhanh và nút tải riêng cho PC (.zip) cùng Android (.apk).
+        </p>
+      </div>
+
+      <div id="gamesGrid" class="games-grid"></div>
+
+      <div id="emptyState" class="empty-state">
+        <h3 style="margin:0 0 6px; font-size:1.05rem; font-weight:800;">Không tìm thấy game nào khớp điều kiện</h3>
+        <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">
+          Hãy thử xóa từ khóa tìm kiếm, chọn tab <strong>Tất cả</strong> hoặc mở <strong>Quản lý &amp; Xuất file HTML</strong> để thêm game mới.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Khu vực hướng dẫn từ A đến Z cho người mới ngay cuối trang -->
+  <section id="atoz-guide" class="atoz-section" aria-label="Hướng dẫn từ A đến Z cho người mới">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Cẩm nang tự vận hành</span>
+        <h2 class="section-title">Hướng dẫn từ A đến Z cho người mới</h2>
+        <p class="section-desc">
+          Làm theo từng bước dưới đây để tự giữ mã nguồn, đăng game build từ Unity lên mạng và chia sẻ cho bạn bè một cách chủ động.
+        </p>
+      </div>
+
+      <div class="atoz-grid">
+        <article class="atoz-card">
+          <span class="atoz-badge">Bước 1 • Giữ file index.html trên máy</span>
+          <h3 class="atoz-title">Lưu và quản lý file index.html ở thư mục riêng</h3>
+          <p class="atoz-text">
+            Tạo thư mục như <code>D:\GameWeb</code> trên chiếc Acer Nitro AN515-43 của bạn và đặt tên file chính là <code>index.html</code>. Mỗi khi cập nhật thông tin hoặc link game, hãy bấm <strong>Tải về file index.html mới</strong> rồi thay vào thư mục này để luôn giữ bản mã nguồn mới nhất.
+          </p>
+        </article>
+
+        <article class="atoz-card">
+          <span class="atoz-badge">Bước 2 • Build game trên Unity 6.3 LTS</span>
+          <h3 class="atoz-title">Xuất bản game từ Unity cho PC và Android</h3>
+          <p class="atoz-text">
+            Trong Unity 6.3 LTS, mở cửa sổ build, chọn <strong>Windows</strong> (nén thư mục xuất ra thành file <code>.zip</code>) hoặc <strong>Android</strong> (xuất file <code>.apk</code>). Với cấu hình RAM 16GB trên máy bạn, hãy ưu tiên test kỹ cảnh 2D hoặc 3D nhẹ trước khi xuất bản.
+          </p>
+        </article>
+
+        <article class="atoz-card">
+          <span class="atoz-badge">Bước 3 • Đưa file game &amp; web lên mạng</span>
+          <h3 class="atoz-title">Tải file game lên nơi lưu trữ rồi gắn link vào web</h3>
+          <p class="atoz-text">
+            File <code>.html</code> không chứa trực tiếp file game nặng hàng trăm MB. Hãy tải file <code>.zip</code> / <code>.apk</code> lên Google Drive, GitHub Releases, itch.io hoặc hosting riêng để lấy link tải, dán vào phần <strong>Quản lý &amp; Xuất file HTML</strong>, xuất file <code>index.html</code> mới rồi tải lên hosting web của bạn.
+          </p>
+        </article>
+
+        <article class="atoz-card">
+          <span class="atoz-badge">Bước 4 • Chia sẻ &amp; khai báo Google</span>
+          <h3 class="atoz-title">Gửi link cho bạn bè &amp; khai báo Google Search Console</h3>
+          <p class="atoz-text">
+            Gửi link trang web cho bạn bè mở trực tiếp trên <strong>Google Chrome</strong> hoặc <strong>Cốc Cốc</strong> để tải game. Nếu muốn người khác tìm thấy trang trên Google, hãy thêm địa chỉ web vào <strong>Google Search Console</strong> và gửi yêu cầu lập chỉ mục (indexing), sau đó chờ Google quét dần theo thời gian.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chân trang -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <strong id="footerStudioName">Nitro Indie Hub</strong> — Trang tải &amp; quản lý game Unity cá nhân.
+      </div>
+      <div>
+        <a href="#games" style="color:var(--primary); font-weight:700;">Danh sách game</a>
+        <span style="margin:0 8px;">•</span>
+        <a href="#atoz-guide" style="color:var(--primary); font-weight:700;">Hướng dẫn A-Z</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       DỮ LIỆU MẶC ĐỊNH BAN ĐẦU (TỰ ĐỘNG CẬP NHẬT KHI TẢI FILE INDEX.HTML MỚI)
+       ========================================================================== */
+    const DEFAULT_HUB_DATA = {
+      studioName: "Nitro Indie Hub",
+      studioSubtitle: "Unity 6.3 LTS • Acer Nitro AN515-43 (16GB RAM)",
+      games: [
+        {
+          id: "game-skybound-jump",
+          title: "Skybound Jump",
+          genre: "2D Platformer",
+          version: "v0.1.0",
+          winSize: "132 MB",
+          apkSize: "76 MB",
+          description: "Nhảy qua các bệ nổi trên mây, né gai năng lượng và thu thập tinh thể để đạt điểm cao nhất qua từng màn chơi ngắn.",
+          winUrl: "",
+          apkUrl: "",
+          installNote: "Bản PC: giải nén file .zip rồi chạy SkyboundJump.exe. Bản Android: bật cho phép cài từ nguồn này khi cài file .apk."
+        },
+        {
+          id: "game-cyber-lane-dash",
+          title: "Cyber Lane Dash",
+          genre: "Arcade Runner",
+          version: "v0.2.0",
+          winSize: "148 MB",
+          apkSize: "84 MB",
+          description: "Lách qua các làn chướng ngại vật đang lao tới khi tốc độ tăng dần, phù hợp chơi giải trí nhanh trên cả máy tính lẫn điện thoại.",
+          winUrl: "",
+          apkUrl: "",
+          installNote: "Nếu Windows hiện cảnh báo bảo mật do chưa ký số cá nhân, bấm More info rồi chọn Run anyway."
+        },
+        {
+          id: "game-forest-relic-quest",
+          title: "Forest Relic Quest",
+          genre: "3D Nhẹ / Phiêu lưu",
+          version: "v0.1.2",
+          winSize: "245 MB",
+          apkSize: "",
+          description: "Khám phá khu rừng nhỏ dựng bằng cảnh 3D tối ưu cho máy tầm trung, tìm cổ vật và mở cổng thoát an toàn.",
+          winUrl: "",
+          apkUrl: "",
+          installNote: "Hiện ưu tiên bản PC (.zip); giải nén toàn bộ thư mục trước khi mở file .exe."
+        }
+      ]
+    };
+
+    const STORAGE_KEY = "nitro_indie_hub_state_v1";
+
+    let hubState = loadHubState();
+    let currentFilter = "all";
+    let currentQuery = "";
+    let toastTimeout = null;
+
+    function cloneObj(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Kiểm tra URL có hợp lệ và an toàn để mở tải file hay không
+    function isValidDownloadUrl(url) {
+      const clean = String(url || "").trim();
+      if (!clean) return false;
+      try {
+        const parsed = new URL(clean);
+        return parsed.protocol === "https:" || parsed.protocol === "http:";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function loadHubState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return cloneObj(DEFAULT_HUB_DATA);
+        const parsed = JSON.parse(raw);
+        return {
+          studioName: typeof parsed.studioName === "string" && parsed.studioName.trim()
+            ? parsed.studioName.trim()
+            : DEFAULT_HUB_DATA.studioName,
+          studioSubtitle: typeof parsed.studioSubtitle === "string"
+            ? parsed.studioSubtitle
+            : DEFAULT_HUB_DATA.studioSubtitle,
+          games: Array.isArray(parsed.games)
+            ? parsed.games
+            : cloneObj(DEFAULT_HUB_DATA.games)
+        };
+      } catch (err) {
+        return cloneObj(DEFAULT_HUB_DATA);
+      }
+    }
+
+    function saveHubState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(hubState));
+      } catch (err) {
+        // Bỏ qua nếu trình duyệt chặn localStorage
+      }
+    }
+
+    function showToast(message, isWarn = false) {
+      const toast = document.getElementById("toast");
+      const dot = document.getElementById("toastDot");
+      const msg = document.getElementById("toastMsg");
+      if (!toast || !dot || !msg) return;
+
+      msg.textContent = message;
+      dot.className = isWarn ? "toast-dot warn" : "toast-dot";
+      toast.classList.add("show");
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3200);
+    }
+
+    function openInfoModal(title, htmlContent) {
+      const modal = document.getElementById("infoModal");
+      const titleEl = document.getElementById("modalTitle");
+      const bodyEl = document.getElementById("modalBody");
+      if (!modal || !titleEl || !bodyEl) return;
+
+      titleEl.textContent = title;
+      bodyEl.innerHTML = htmlContent;
+      modal.classList.add("open");
+    }
+
+    function closeInfoModal() {
+      const modal = document.getElementById("infoModal");
+      if (modal) modal.classList.remove("open");
+    }
+
+    function renderStudioHeader() {
+      document.title = `${hubState.studioName} — Kho Game Unity Cá Nhân`;
+      const navName = document.getElementById("navStudioName");
+      const navSub = document.getElementById("navStudioSub");
+      const footerName = document.getElementById("footerStudioName");
+      const nameInput = document.getElementById("studioNameInput");
+      const subInput = document.getElementById("studioSubInput");
+
+      if (navName) navName.textContent = hubState.studioName;
+      if (navSub) navSub.textContent = hubState.studioSubtitle || "Kho game Unity cá nhân";
+      if (footerName) footerName.textContent = hubState.studioName;
+
+      if (nameInput && document.activeElement !== nameInput) {
+        nameInput.value = hubState.studioName;
+      }
+      if (subInput && document.activeElement !== subInput) {
+        subInput.value = hubState.studioSubtitle;
+      }
+    }
+
+    function renderGamesList() {
+      const grid = document.getElementById("gamesGrid");
+      const emptyState = document.getElementById("emptyState");
+      if (!grid || !emptyState) return;
+
+      const query = currentQuery.trim().toLowerCase();
+
+      const filteredGames = hubState.games.filter((game) => {
+        const hasPc = isValidDownloadUrl(game.winUrl) || Boolean((game.winSize || "").trim());
+        const hasAndroid = isValidDownloadUrl(game.apkUrl) || Boolean((game.apkSize || "").trim());
+
+        const matchPlatform =
+          currentFilter === "all" ||
+          (currentFilter === "pc" && hasPc) ||
+          (currentFilter === "android" && hasAndroid);
+
+        const searchText = `${game.title} ${game.genre} ${game.version} ${game.description}`.toLowerCase();
+        const matchQuery = !query || searchText.includes(query);
+
+        return matchPlatform && matchQuery;
+      });
+
+      if (filteredGames.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.add("show");
+        return;
+      }
+
+      emptyState.classList.remove("show");
+      grid.innerHTML = filteredGames
+        .map((game) => {
+          const pcValid = isValidDownloadUrl(game.winUrl);
+          const apkValid = isValidDownloadUrl(game.apkUrl);
+          const pcSizeText = (game.winSize || "").trim() || "Chưa rõ";
+          const apkSizeText = (game.apkSize || "").trim() || "Chưa rõ";
+          const noteText = (game.installNote || "").trim()
+            || "Giải nén file .zip trước khi chạy .exe trên Windows; bật cho phép cài từ nguồn này khi cài .apk trên Android.";
+
+          const pcButtonHtml = pcValid
+            ? `<a href="${escapeHtml(game.winUrl.trim())}" target="_blank" rel="noopener noreferrer"
+                class="btn btn-sky dl-btn" data-dl-platform="PC Windows (.zip)" data-dl-game="${escapeHtml(game.title)}">
+                <span>Tải bản PC (.zip)</span>
+                <span>${escapeHtml(pcSizeText)}</span>
+              </a>`
+            : `<button type="button" class="btn btn-outline dl-btn" data-missing-platform="PC Windows (.zip)" data-dl-game="${escapeHtml(game.title)}">
+                <span>Tải bản PC (.zip) • Chưa gắn link</span>
+                <span>${escapeHtml(pcSizeText)}</span>
+              </button>`;
+
+          const apkButtonHtml = apkValid
+            ? `<a href="${escapeHtml(game.apkUrl.trim())}" target="_blank" rel="noopener noreferrer"
+                class="btn btn-mint dl-btn" data-dl-platform="Android (.apk)" data-dl-game="${escapeHtml(game.title)}">
+                <span>Tải bản Android (.apk)</span>
+                <span>${escapeHtml(apkSizeText)}</span>
+              </a>`
+            : `<button type="button" class="btn btn-outline dl-btn" data-missing-platform="Android (.apk)" data-dl-game="${escapeHtml(game.title)}">
+                <span>Tải bản Android (.apk) • Chưa gắn link</span>
+                <span>${escapeHtml(apkSizeText)}</span>
+              </button>`;
+
+          return `
+            <article class="game-card">
+              <div>
+                <div class="card-top-meta">
+                  <span class="tag-genre">${escapeHtml(game.genre || "Unity Indie")}</span>
+                  <span class="tag-version">${escapeHtml(game.version || "v0.1")}</span>
+                </div>
+
+                <h3 class="game-title">${escapeHtml(game.title)}</h3>
+                <p class="game-desc">${escapeHtml(game.description)}</p>
+
+                <div class="size-row">
+                  <span class="size-chip">PC: ${escapeHtml(pcSizeText)}</span>
+                  <span class="size-chip">Android: ${escapeHtml(apkSizeText)}</span>
+                </div>
+
+                <div class="install-tip-box">
+                  <strong>Cài đặt nhanh:</strong> ${escapeHtml(noteText)}
+                </div>
+              </div>
+
+              <div class="card-actions">
+                ${pcButtonHtml}
+                ${apkButtonHtml}
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      // Thông báo thân thiện khi chưa gắn link thật
+      grid.querySelectorAll("[data-missing-platform]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const platform = btn.getAttribute("data-missing-platform") || "nền tảng này";
+          const gameName = btn.getAttribute("data-dl-game") || "game";
+          openInfoModal(
+            `Chưa gắn link tải ${platform} cho "${gameName}"`,
+            `<p style="margin:0 0 10px;">Link tải trực tiếp cho <strong>${escapeHtml(gameName)}</strong> (${escapeHtml(platform)}) hiện chưa được gắn hoặc đang để trống.</p>
+             <p style="margin:0;">Nếu bạn là chủ trang: hãy tải file build từ Unity lên nơi lưu trữ (Google Drive, GitHub Releases, itch.io hoặc hosting riêng), mở <strong>Quản lý &amp; Xuất file HTML</strong>, dán link vào ô tương ứng rồi bấm <strong>Tải về file index.html mới</strong>.</p>`
+          );
+        });
+      });
+
+      // Nhắc nhở nhẹ nhàng khi mở link tải file cài
+      grid.querySelectorAll("a[data-dl-platform]").forEach((link) => {
+        link.addEventListener("click", () => {
+          const platform = link.getAttribute("data-dl-platform") || "";
+          if (platform.includes("PC")) {
+            showToast("Đang mở link tải bản PC (.zip). Nhớ giải nén thư mục trước khi chạy file .exe nhé!");
+          } else {
+            showToast("Đang mở link tải bản Android (.apk). Nếu máy hỏi, hãy bật cho phép cài từ nguồn này.");
+          }
+        });
+      });
+    }
+
+    function renderManagerList() {
+      const listEl = document.getElementById("mgrGameList");
+      const countEl = document.getElementById("mgrCount");
+      if (!listEl || !countEl) return;
+
+      countEl.textContent = String(hubState.games.length);
+
+      if (hubState.games.length === 0) {
+        listEl.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">Chưa có game nào trong danh sách. Hãy điền form bên trái để thêm game mới.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = hubState.games
+        .map((g) => `
+          <div class="mini-game-item">
+            <div style="min-width:0;">
+              <p class="mini-game-name">${escapeHtml(g.title)} <span style="color:var(--primary);">(${escapeHtml(g.version)})</span></p>
+              <p class="mini-game-meta">
+                ${escapeHtml(g.genre)} • PC: ${isValidDownloadUrl(g.winUrl) ? "Có link" : "Chưa có link"} • APK: ${isValidDownloadUrl(g.apkUrl) ? "Có link" : "Chưa có link"}
+              </p>
+            </div>
+            <div style="display:flex; gap:6px; flex-shrink:0;">
+              <button type="button" class="btn btn-outline edit-item-btn" style="padding:7px 11px; font-size:0.8rem;" data-id="${escapeHtml(g.id)}">Sửa</button>
+              <button type="button" class="btn btn-danger-soft delete-item-btn" data-id="${escapeHtml(g.id)}">Xóa</button>
+            </div>
+          </div>
+        `)
+        .join("");
+
+      listEl.querySelectorAll(".edit-item-btn").forEach((btn) => {
+        btn.addEventListener("click", () => startEditGame(btn.getAttribute("data-id")));
+      });
+
+      listEl.querySelectorAll(".delete-item-btn").forEach((btn) => {
+        btn.addEventListener("click", () => deleteGame(btn.getAttribute("data-id")));
+      });
+    }
+
+    function resetGameForm() {
+      const form = document.getElementById("gameForm");
+      if (form) form.reset();
+      document.getElementById("editingGameId").value = "";
+      document.getElementById("formHeading").textContent = "Thêm game mới";
+      document.getElementById("saveGameBtn").textContent = "Lưu game";
+    }
+
+    function startEditGame(id) {
+      const target = hubState.games.find((g) => g.id === id);
+      if (!target) return;
+
+      document.getElementById("editingGameId").value = target.id;
+      document.getElementById("fTitle").value = target.title || "";
+      document.getElementById("fGenre").value = target.genre || "";
+      document.getElementById("fVersion").value = target.version || "";
+      document.getElementById("fWinSize").value = target.winSize || "";
+      document.getElementById("fApkSize").value = target.apkSize || "";
+      document.getElementById("fDesc").value = target.description || "";
+      document.getElementById("fWinUrl").value = target.winUrl || "";
+      document.getElementById("fApkUrl").value = target.apkUrl || "";
+      document.getElementById("fInstallNote").value = target.installNote || "";
+
+      document.getElementById("formHeading").textContent = `Đang sửa: ${target.title}`;
+      document.getElementById("saveGameBtn").textContent = "Cập nhật game";
+      document.getElementById("fTitle").focus();
+    }
+
+    function deleteGame(id) {
+      const target = hubState.games.find((g) => g.id === id);
+      hubState.games = hubState.games.filter((g) => g.id !== id);
+      saveHubState();
+      if (document.getElementById("editingGameId").value === id) {
+        resetGameForm();
+      }
+      renderGamesList();
+      renderManagerList();
+      showToast(`Đã xóa "${target ? target.title : "game"}" khỏi danh sách.`);
+    }
+
+    function createSlugId(title) {
+      const base = String(title || "game")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") || "game";
+      return `${base}-${Date.now().toString(36)}`;
+    }
+
+    // Xuất trọn vẹn mã nguồn HTML đã cập nhật thành file index.html tải về máy
+    function downloadUpdatedIndexHtml() {
+      try {
+        const serializedState = JSON.stringify(hubState, null, 2);
+        let htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+        // Đảm bảo ngăn quản lý đóng khi mở file mới xuất
+        htmlContent = htmlContent.replace(
+          /<section id="managerDrawer" class="([^"]*)"/,
+          (match, cls) => `<section id="managerDrawer" class="${cls.replace(/\bopen\b/g, "").trim()}"`
+        );
+
+        // Nhúng dữ liệu mới vào DEFAULT_HUB_DATA để khi mở ở bất kỳ máy/trình duyệt nào cũng có sẵn
+        const markerStart = "const DEFAULT_HUB_DATA = ";
+        const markerEnd = "\n    const STORAGE_KEY =";
+        const startIdx = htmlContent.indexOf(markerStart);
+        const endIdx = htmlContent.indexOf(markerEnd);
+
+        if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+          htmlContent =
+            htmlContent.slice(0, startIdx) +
+            `${markerStart}${serializedState};` +
+            htmlContent.slice(endIdx);
+        }
+
+        const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "index.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast("Đã tải về file index.html mới kèm toàn bộ thông tin & link game của bạn!");
+      } catch (err) {
+        openInfoModal(
+          "Không thể xuất file trực tiếp trên môi trường hiện tại",
+          "<p style='margin:0;'>Trình duyệt hoặc khung xem trước đang hạn chế tải file tự động. Bạn có thể copy toàn bộ mã nguồn từ trình soạn thảo lưu thành file <code>index.html</code> trên máy.</p>"
+        );
+      }
+    }
+
+    function bindEvents() {
+      // Đóng modal thông báo
+      document.getElementById("modalCloseBtn")?.addEventListener("click", closeInfoModal);
+      document.getElementById("infoModal")?.addEventListener("click", (e) => {
+        if (e.target.id === "infoModal") closeInfoModal();
+      });
+
+      // Bật/tắt chế độ Quản lý & Xuất file HTML
+      const toggleBtn = document.getElementById("toggleManagerBtn");
+      const drawer = document.getElementById("managerDrawer");
+      const toggleText = document.getElementById("toggleManagerText");
+
+      toggleBtn?.addEventListener("click", () => {
+        if (!drawer || !toggleText) return;
+        const willOpen = !drawer.classList.contains("open");
+        drawer.classList.toggle("open", willOpen);
+        toggleBtn.setAttribute("aria-expanded", String(willOpen));
+        toggleText.textContent = willOpen ? "Đóng quản lý" : "Quản lý & Xuất file HTML";
+        if (willOpen) {
+          drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+
+      // Đổi tên studio và phụ đề
+      document.getElementById("studioNameInput")?.addEventListener("input", (e) => {
+        hubState.studioName = e.target.value;
+        saveHubState();
+        renderStudioHeader();
+      });
+
+      document.getElementById("studioSubInput")?.addEventListener("input", (e) => {
+        hubState.studioSubtitle = e.target.value;
+        saveHubState();
+        renderStudioHeader();
+      });
+
+      // Thêm game mới / xóa trắng form
+      document.getElementById("addNewModeBtn")?.addEventListener("click", () => {
+        resetGameForm();
+        document.getElementById("fTitle")?.focus();
+      });
+
+      document.getElementById("clearFormBtn")?.addEventListener("click", resetGameForm);
+
+      // Lưu thêm hoặc cập nhật game
+      document.getElementById("gameForm")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const editId = document.getElementById("editingGameId").value.trim();
+        const title = document.getElementById("fTitle").value.trim();
+        const genre = document.getElementById("fGenre").value.trim();
+        const version = document.getElementById("fVersion").value.trim();
+        const winSize = document.getElementById("fWinSize").value.trim();
+        const apkSize = document.getElementById("fApkSize").value.trim();
+        const description = document.getElementById("fDesc").value.trim();
+        const winUrl = document.getElementById("fWinUrl").value.trim();
+        const apkUrl = document.getElementById("fApkUrl").value.trim();
+        const installNote = document.getElementById("fInstallNote").value.trim();
+
+        if (!title || !genre || !version || !description) {
+          showToast("Vui lòng nhập đủ Tên game, Thể loại, Phiên bản và Mô tả ngắn.", true);
+          return;
+        }
+
+        if (winUrl && !isValidDownloadUrl(winUrl)) {
+          showToast("Link bản PC nên bắt đầu bằng https:// hoặc http:// (hoặc để trống).", true);
+          return;
+        }
+
+        if (apkUrl && !isValidDownloadUrl(apkUrl)) {
+          showToast("Link bản Android nên bắt đầu bằng https:// hoặc http:// (hoặc để trống).", true);
+          return;
+        }
+
+        const item = {
+          id: editId || createSlugId(title),
+          title,
+          genre,
+          version,
+          winSize,
+          apkSize,
+          description,
+          winUrl,
+          apkUrl,
+          installNote
+        };
+
+        if (editId) {
+          const idx = hubState.games.findIndex((g) => g.id === editId);
+          if (idx !== -1) {
+            hubState.games[idx] = item;
+            showToast(`Đã cập nhật "${title}" (${version}).`);
+          }
+        } else {
+          hubState.games.unshift(item);
+          showToast(`Đã thêm "${title}" (${version}) vào danh sách.`);
+        }
+
+        saveHubState();
+        resetGameForm();
+        renderGamesList();
+        renderManagerList();
+      });
+
+      // Tải về file index.html mới
+      document.getElementById("exportIndexBtn")?.addEventListener("click", downloadUpdatedIndexHtml);
+
+      // Khôi phục dữ liệu mẫu
+      document.getElementById("restoreSampleBtn")?.addEventListener("click", () => {
+        hubState = cloneObj(DEFAULT_HUB_DATA);
+        saveHubState();
+        resetGameForm();
+        renderStudioHeader();
+        renderGamesList();
+        renderManagerList();
+        showToast("Đã khôi phục danh sách game mẫu ban đầu.");
+      });
+
+      // Tìm kiếm game
+      document.getElementById("searchInput")?.addEventListener("input", (e) => {
+        currentQuery = e.target.value || "";
+        renderGamesList();
+      });
+
+      // Lọc theo nền tảng
+      document.querySelectorAll(".filter-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          currentFilter = tab.getAttribute("data-platform") || "all";
+          document.querySelectorAll(".filter-tab").forEach((t) => {
+            t.classList.toggle("active", t === tab);
+          });
+          renderGamesList();
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderStudioHeader();
+      renderGamesList();
+      renderManagerList();
+      bindEvents();
+    });
+  </script>
+</body>
+</html>
